@@ -8,9 +8,10 @@ export const dbConnect = (url: string) => {
   });
   const dbConnection = mongoose.connection;
 
-  dbConnection.on("error", () => {
-    console.log("Database Connection Error!");
-  });
+  dbConnection.on(
+    "error",
+    console.error.bind(console, "Database Connection Error: ")
+  );
 
   dbConnection.on("open", () => {
     console.log("Database Connection Success");
