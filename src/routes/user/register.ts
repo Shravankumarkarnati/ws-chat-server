@@ -4,14 +4,24 @@ import userModel, { IUserDetails } from "../../model/user.schema";
 const userApi = Router();
 
 userApi.post("/register", (req: Request, res: Response) => {
-  const userDetails: IUserDetails = req.body;
+  const userDetails: IUserDetails = req.body.data;
+  console.log(userDetails);
   const newUser = new userModel({ ...userDetails });
-  newUser.save().then(() => {
-    res.send({
-      success: true,
-      username: userDetails.username,
+  newUser
+    .save()
+    .then(() => {
+      res.send({
+        success: true,
+        username: userDetails.username,
+      });
+    })
+    .catch((err) => {
+      res.status(409);
+      res.send({
+        message: "This username already exists",
+        error: err,
+      });
     });
-  });
 });
 
 userApi.post("/login", async (req: Request, res: Response) => {

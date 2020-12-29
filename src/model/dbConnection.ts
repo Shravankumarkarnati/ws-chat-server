@@ -5,6 +5,7 @@ export const dbConnect = (url: string) => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
+    useCreateIndex: true,
   });
   const dbConnection = mongoose.connection;
 

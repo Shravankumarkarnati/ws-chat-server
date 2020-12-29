@@ -6,7 +6,7 @@ export interface IUserDetails extends Document {
 }
 
 const userSchema: Schema = new Schema<IUserDetails>({
-  username: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 });
 
