@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import userModel, { IUserDetails } from "../../model/user.schema";
+import userModel, { IUserDetails } from "../model/user.schema";
 
 const userApi = Router();
 
@@ -15,9 +15,9 @@ userApi.post("/register", (req: Request, res: Response) => {
         username: userDetails.username,
       });
     })
-    .catch((err) => {
-      res.status(409);
+    .catch((err: any) => {
       res.send({
+        success: false,
         message: "This username already exists",
         error: err,
       });
@@ -25,21 +25,21 @@ userApi.post("/register", (req: Request, res: Response) => {
 });
 
 userApi.post("/login", async (req: Request, res: Response) => {
-  const userDetails: IUserDetails = req.body;
+  const userDetails: IUserDetails = req.body.data;
   const user = await userModel.findOne({ username: userDetails.username });
 
   if (!user) {
-    res.status(404);
     res.send({
-      error: `No user found with Username: ${userDetails.username}`,
+      success: false,
+      message: `No user found with Username: ${userDetails.username}`,
     });
     return;
   }
 
   if (userDetails.password !== user.password) {
-    res.status(406);
     res.send({
-      error: `Incorrect Password`,
+      success: false,
+      message: `Incorrect Password`,
     });
     return;
   }

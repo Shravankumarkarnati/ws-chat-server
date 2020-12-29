@@ -5,7 +5,8 @@ import Express, { Request, Response } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import { dbConnect } from "./model/dbConnection";
-import userApi from "./routes/user/register";
+import searchApi from "./routes/search";
+import userApi from "./routes/user";
 
 dotenv.config({ path: "./.env" });
 
@@ -35,5 +36,6 @@ expressApp.get("/", (_: Request, res: Response) => {
 dbConnect(process.env.MONGO_DB_URL as string);
 
 expressApp.use("/api", userApi);
+expressApp.use("/api", searchApi);
 
 export default expressApp;
