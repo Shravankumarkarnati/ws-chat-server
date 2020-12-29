@@ -13,6 +13,7 @@ userApi.post("/register", (req: Request, res: Response) => {
       res.send({
         success: true,
         username: userDetails.username,
+        id: userDetails.id,
       });
     })
     .catch((err: any) => {
@@ -27,7 +28,6 @@ userApi.post("/register", (req: Request, res: Response) => {
 userApi.post("/login", async (req: Request, res: Response) => {
   const userDetails: IUserDetails = req.body.data;
   const user = await userModel.findOne({ username: userDetails.username });
-
   if (!user) {
     res.send({
       success: false,
@@ -47,6 +47,7 @@ userApi.post("/login", async (req: Request, res: Response) => {
   res.send({
     success: true,
     username: user.username,
+    id: user.id,
   });
 });
 
