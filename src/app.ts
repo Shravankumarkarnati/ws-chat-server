@@ -7,7 +7,9 @@ import morgan from "morgan";
 import { dbConnect } from "./model/dbConnection";
 import searchApi from "./routes/search";
 import userApi from "./routes/user";
-import { SocketInit } from "./socketIO";
+import { SocketInit } from "./socketIO/init";
+import { socketOnLogin } from "./socketIO/login";
+import { initMiddlewares } from "./socketIO/middlewares";
 
 dotenv.config({ path: "./.env" });
 
@@ -42,11 +44,11 @@ expressApp.use("/api", searchApi);
 
 export const io = SocketInit(httpServer);
 
+initMiddlewares();
+
 io.on("connection", function (socket: any) {
-  console.log("a user connected");
-  socket.on("message", function (message: any) {
-    console.log(message);
-  });
+  console.log("a user connected", socket.id);
+  socketOnLogin(socket);
 });
 
 export default expressApp;
