@@ -7,7 +7,8 @@ searchApi.post("/search", (req: Request, res: Response) => {
   const { searchKeyWord } = req.body.data;
   if (searchKeyWord.length < 2) {
     res.send({
-      success: false,
+      success: true,
+      results: [],
     });
   } else {
     const regex = new RegExp(searchKeyWord);
@@ -19,10 +20,10 @@ searchApi.post("/search", (req: Request, res: Response) => {
           results: response.map((cur) => [cur.username, cur.id]),
         });
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         res.send({
           success: false,
-          error: err,
+          error: err.message,
         });
       });
   }
